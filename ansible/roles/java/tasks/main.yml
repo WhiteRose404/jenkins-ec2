@@ -1,0 +1,6 @@
+- name: "install java"
+  apt:
+    name: openjdk-11-jre-headless
+    state: present
+  become: true
+  become_method: sudo

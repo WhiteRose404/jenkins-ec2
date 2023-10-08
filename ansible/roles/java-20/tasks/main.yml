@@ -1,0 +1,43 @@
+- name: "check if the binary exists"
+  stat:
+    path: /opt/jdk-20_linux-x64_bin.tar.gz
+  register: file
+- name: "remove the current java version"
+  apt:
+    name: openjdk-11-jre-headless
+    state: absent
+  become: true
+  become_method: sudo
+- name: "install java"
+  uri:
+    url: https://download.oracle.com/java/20/latest/jdk-20_linux-x64_bin.tar.gz
+    dest: /opt/jdk-20_linux-x64_bin.tar.gz
+  become: true
+  become_method: sudo
+  when: not file.stat.exists
+- name: "already installed?"
+  stat:
+    path: /opt/jdk-20_linux-x64_bin
+  register: extracted
+- name: "extract java"
+  unarchive:
+    src: /opt/jdk-20_linux-x64_bin.tar.gz
+    dest: /opt
+    remote_src: yes
+  become: true
+  become_method: sudo
+  when: not extracted.stat.exists
+- name: "set java home"
+  lineinfile:
+    path: /etc/environment
+    line: "JAVA_HOME=/opt/jdk-20.0.2"
+    state: present
+  become: true
+  become_method: sudo
+- name: "set java path"
+  lineinfile:
+    path: /etc/environment
+    line: "PATH={{ lookup('env', 'PATH') }}:/opt/jdk-20.0.2/bin" 
+    state: present
+  become: true
+  become_method: sudo

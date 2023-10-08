@@ -1,0 +1,7 @@
+- name: set up the master cluster
+  hosts: master
+  roles:
+    - core
+    - java
+    - docker
+    - jenkins

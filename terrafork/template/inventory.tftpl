@@ -1,0 +1,16 @@
+
+master:
+  hosts:
+    instance_master:
+      ansible_host: ${master_ip}
+      ansible_user: ${host}
+      ansible_ssh_private_key_file: ${key_pair_path}
+
+slaves:
+  hosts:
+  %{ for slave in slaves ~}
+    slave-${slave.id}:
+      ansible_host: ${slave.public_ip}
+      ansible_user: ${host}
+      ansible_ssh_private_key_file: ${key_pair_path}
+  %{ endfor ~}

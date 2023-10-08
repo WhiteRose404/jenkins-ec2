@@ -1,0 +1,11 @@
+- name: "update the system"
+  apt:
+    update_cache: yes
+    upgrade: dist
+  become: true
+  become_method: sudo
+- name: upgrade the system
+  apt:
+    upgrade: yes
+  become: true
+  become_method: sudo

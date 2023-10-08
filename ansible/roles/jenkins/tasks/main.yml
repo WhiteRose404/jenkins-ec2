@@ -1,0 +1,31 @@
+- name: add key to apt
+  block:
+    - name: load the key
+      get_url:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        dest: /usr/share/keyrings/jenkins-keyring.asc
+    - name: add the key to apt
+      apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
+        state: present
+  become: true
+  become_method: sudo
+- name: update the system
+  apt:
+    update_cache: yes
+    upgrade: dist
+  become: true
+  become_method: sudo
+- name: install jenkins
+  apt:
+    name: jenkins
+    state: present
+  become: true
+  become_method: sudo
+- name: start jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+  become: true
+  become_method: sudo

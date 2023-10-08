@@ -1,0 +1,23 @@
+- name: "install docker"
+  apt:
+    name: docker.io
+    state: present
+  become: true
+  become_method: sudo
+- name: "install docker-compose"
+  apt:  
+    name: docker-compose
+    state: present
+  become: true
+  become_method: sudo
+- name: "add the current user to the docker group"
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+  become: true
+  become_method: sudo
+- name: "make sure that the user is in the docker group"
+  shell: source /home/ubuntu/.bashrc
+  args:
+    executable: /bin/bash

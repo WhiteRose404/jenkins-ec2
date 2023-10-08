@@ -1,0 +1,21 @@
+# ignore terraform files
+.terraform
+.terraform/*
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfplan
+*.tfout
+*.tflock
+.terraform.lock.hcl
+
+# ignore inventory file
+inventory.yml
+
+
+# virtual environment python
+*/bin
+*/include
+*/lib
+*/lib64
+__pycache__

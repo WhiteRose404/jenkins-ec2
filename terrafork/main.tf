@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 locals {
-    sg_protocol = "tcp"
+    # sg_protocol = "tcp"
     sg_cidr = ["0.0.0.0/0"]
 }
 
@@ -16,7 +16,7 @@ resource "aws_security_group" "allow_ssh" {
         content {
             from_port = ingress.value.from_port
             to_port = ingress.value.to_port
-            protocol = local.sg_protocol
+            protocol = ingress.value.sg_protocol
             cidr_blocks = local.sg_cidr
         }
     }
@@ -32,6 +32,7 @@ resource "aws_instance" "master" {
     ami = var.ami_master
     instance_type = var.instance_type_master
     key_name = var.key_pair_name
+    security_groups = [ aws_security_group.allow_ssh.name ]
     tags = {
         Name = "jenkins-master"
     }
@@ -42,6 +43,7 @@ resource "aws_instance" "slave" {
     ami = var.ami_slave
     instance_type = var.instance_type_slave
     key_name = var.key_pair_name
+    security_groups = [ aws_security_group.allow_ssh.name ]
     tags = {
         Name = "jenkins-slave-${count.index}"
     }

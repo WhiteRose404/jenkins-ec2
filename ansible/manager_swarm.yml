@@ -1,0 +1,33 @@
+- name: "swarm manager"
+  hosts: master
+  roles:
+    - core
+    - docker
+
+  tasks:
+    - name: "set up the swarm manager"
+      shell: docker swarm init --advertise-addr {{ ansible_default_ipv4.address }} --listen-addr {{ ansible_default_ipv4.address }}:2377
+      become: true
+      become_method: sudo
+      register: swarm_manager
+      when: swarm_manager is not defined
+    - name: "get the swarm manager token"
+      shell: docker swarm join-token -q worker > /home/ubuntu/swarm_manager_token
+      become: true
+      become_method: sudo
+      register: swarm_manager_token
+      when: swarm_manager_token is not defined
+    - name: "get the swarm manager ip"
+      shell: docker info | grep -i 'node address' | awk '{print $3}' > /home/ubuntu/swarm_manager_ip
+      register: swarm_manager_ip
+      when: swarm_manager_ip is not defined
+    - name: "get the swarm maanger token"
+      fetch:
+        src: /home/ubuntu/swarm_manager_token
+        dest: secrets/swarm_manager_token
+        flat: yes
+    - name: "get the swarm maanger ip"
+      fetch:
+        src: /home/ubuntu/swarm_manager_ip
+        dest: secrets/swarm_manager_ip
+        flat: yes

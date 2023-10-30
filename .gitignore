@@ -19,3 +19,6 @@ inventory.yml
 */lib
 */lib64
 __pycache__
+
+
+secrets/

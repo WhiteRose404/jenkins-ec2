@@ -1,0 +1,10 @@
+- name: "worker node"
+  hosts: slaves
+  roles:
+    - core
+    - docker
+  tasks:
+    - name: "join the swarm"
+      shell: docker swarm join --token {{ lookup('file', 'secrets/swarm_manager_token') }} {{ lookup('file', 'secrets/swarm_manager_ip') }}:2377
+      become: true
+      become_method: sudo

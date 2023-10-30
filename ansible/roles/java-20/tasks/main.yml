@@ -10,7 +10,7 @@
   become_method: sudo
 - name: "install java"
   uri:
-    url: https://download.oracle.com/java/20/latest/jdk-20_linux-x64_bin.tar.gz
+    url: https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
     dest: /opt/jdk-20_linux-x64_bin.tar.gz
   become: true
   become_method: sudo

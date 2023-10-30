@@ -1,4 +1,4 @@
-- name: set up the master cluster
+- name: set up the master cluster-jenkins
   hosts: master
   roles:
     - core

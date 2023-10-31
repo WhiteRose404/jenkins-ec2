@@ -1,20 +1,18 @@
-# # not worth it -- just use the docker swarm plugin in jenkins to run jobs on the slaves (containers)
-
-# - name: set up the slave cluster-jenkins
-#   hosts: slaves
-#   roles:
-#     - core
-#     - java-20
-#   tasks:
-#     - name: add a directory for jenkins
-#       file:
-#         path: /var/jenkins
-#         state: directory
-#       become: true
-#       become_method: sudo
-#     - name: change owner to be jenkins
-#       file:
-#         path: /var/jenkins
-#         owner: ubuntu
-#       become: true
-#       become_method: sudo
+- name: set up the slave cluster-jenkins
+  hosts: slaves
+  roles:
+    - core
+    - java-20
+  tasks:
+    - name: add a directory for jenkins
+      file:
+        path: /var/jenkins
+        state: directory
+      become: true
+      become_method: sudo
+    - name: change owner to be jenkins
+      file:
+        path: /var/jenkins
+        owner: ubuntu
+      become: true
+      become_method: sudo

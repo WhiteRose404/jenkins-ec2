@@ -1,8 +1,14 @@
 import jenkins
 import yaml
 import os
-JENKINS_URL = os.environ.get('JENKINS_URL', '')
-server = jenkins.Jenkins("http://52.47.203.240:8080/", username='admin', password='admin')
+from dotenv import load_dotenv
+load_dotenv()
+
+
+JENKINS_URL = os.environ.get('JENKINS_URL', 'localhost')
+USERNAME = os.environ.get('JENKINS_USERNAME', '')
+PASSWORD = os.environ.get('JENKINS_PASSWORD', '')
+server = jenkins.Jenkins(f"http://{JENKINS_URL}:8080/", username=USERNAME, password=PASSWORD)
 
 
 
@@ -33,7 +39,7 @@ for name in slaves:
         launcher_params={
             'port': '22', 
             'username': slave['ansible_user'],
-            'credentialsId': 'f618241d-7931-4a4b-b7f4-687964e9d334',
+            'credentialsId': '811a06f1-78f7-47bf-b072-cab4483bcc9d',
             'host': slave['ansible_host'],
         });
     index += 1;
